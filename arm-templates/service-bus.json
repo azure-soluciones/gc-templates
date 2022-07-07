@@ -90,7 +90,9 @@
                   "properties": {
                     "filterType": "CorrelationFilter",
                     "correlationFilter": {
-                      "event": "Delivery"
+                      "event": "Delivery",
+                      "label": "EVENT",
+                      "correlationId": "DeliveryEvent"
                     }
                   }
                 }
@@ -113,7 +115,9 @@
                   "properties": {
                     "filterType": "CorrelationFilter",
                     "correlationFilter": {
-                      "event": "DeliveryFailed"
+                      "event": "DeliveryFailed",
+                      "label": "ERRORS",
+                      "correlationId": "DeliveryFailedError"
                     }
                   }
                 }
