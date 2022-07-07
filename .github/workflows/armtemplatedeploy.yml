@@ -69,12 +69,12 @@ jobs:
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{ env.subscriptionId }}
           template: ./arm-templates/service-bus.json
-          parameters: serviceBusNamespaceName=stageServiceBus
-            serviceBusTopicName=stageTopic
-            subscriptionDeliveryName=stageDelivery
-            subscriptionDeliveryFailedName=stageDeliveryFailed
-            deliveryRuleName=stageDeliveryRule
-            deliveryFailedRuleName=stageDeliveryFailedRule
+          parameters: serviceBusNamespaceName=stgServiceBus3wh9k3k
+            serviceBusTopicName=stgTopicpal4y5t
+            subscriptionDeliveryName=stgDelivery5hk4ppg
+            subscriptionDeliveryFailedName=stgDeliveryFailedkm5v14u
+            deliveryRuleName=stgDeliveryRulesz010ei
+            deliveryFailedRuleName=stgDeliveryFailedRule735g2sf
             location="${{ env.location }}"
             sku=Standard
 
@@ -139,11 +139,11 @@ jobs:
           resourceGroupName: ${{ env.resource_group_name }}
           subscriptionId: ${{ env.subscriptionId }}
           template: ./arm-templates/service-bus.json
-          parameters: serviceBusNamespaceName=prodServiceBus
-            serviceBusTopicName=prodTopic
-            subscriptionDeliveryName=prodDelivery
-            subscriptionDeliveryFailedName=prodDeliveryFailed
-            deliveryRuleName=prodDeliveryRule
-            deliveryFailedRuleName=prodDeliveryFailedRule
+          parameters: serviceBusNamespaceName=prodServiceBus735g2sf
+            serviceBusTopicName=prodTopicsz010ei
+            subscriptionDeliveryName=prodDeliverykm5v14u
+            subscriptionDeliveryFailedName=prodDeliveryFailed5hk4ppg
+            deliveryRuleName=prodDeliveryRulepal4y5t
+            deliveryFailedRuleName=prodDeliveryFailedRule3wh9k3k
             location="${{ env.location }}"
             sku=Standard

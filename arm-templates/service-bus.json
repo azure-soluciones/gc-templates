@@ -88,13 +88,9 @@
                   "type": "Rules",
                   "dependsOn": ["[parameters('subscriptionDeliveryName')]"],
                   "properties": {
-                    "filterType": "SqlFilter",
-                    "sqlFilter": {
-                      "sqlExpression": "StoreName = 'Store1'",
-                      "requiresPreprocessing": "false"
-                    },
-                    "action": {
-                      "sqlExpression": "set FilterTag = 'true'"
+                    "filterType": "CorrelationFilter",
+                    "correlationFilter": {
+                      "event": "Delivery"
                     }
                   }
                 }
