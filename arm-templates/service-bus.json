@@ -1,0 +1,132 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serviceBusNamespaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter name for service bus namespace"
+      }
+    },
+    "serviceBusTopicName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter topic name"
+      }
+    },
+    "subscriptionDeliveryName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter subscription name"
+      }
+    },
+    "subscriptionDeliveryFailedName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter subscription name"
+      }
+    },
+    "deliveryRuleName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter service bus rule name"
+      }
+    },
+    "deliveryFailedRuleName": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter service bus rule name"
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter location to deploy service bus to"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "metadata": {
+        "description": "Enter service bus sku"
+      }
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('serviceBusNamespaceName')]",
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "location": "[parameters('location')]",
+      "properties": {},
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "resources": [
+        {
+          "name": "[parameters('serviceBusTopicName')]",
+          "type": "Topics",
+          "apiVersion": "2017-04-01",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "path": "[parameters('serviceBusTopicName')]"
+          },
+          "resources": [
+            {
+              "apiVersion": "2017-04-01",
+              "name": "[parameters('subscriptionDeliveryName')]",
+              "type": "Subscriptions",
+              "dependsOn": ["[parameters('serviceBusTopicName')]"],
+              "properties": {},
+              "resources": [
+                {
+                  "apiVersion": "2017-04-01",
+                  "name": "[parameters('deliveryRuleName')]",
+                  "type": "Rules",
+                  "dependsOn": ["[parameters('subscriptionDeliveryName')]"],
+                  "properties": {
+                    "filterType": "SqlFilter",
+                    "sqlFilter": {
+                      "sqlExpression": "StoreName = 'Store1'",
+                      "requiresPreprocessing": "false"
+                    },
+                    "action": {
+                      "sqlExpression": "set FilterTag = 'true'"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "apiVersion": "2017-04-01",
+              "name": "[parameters('subscriptionDeliveryFailedName')]",
+              "type": "Subscriptions",
+              "dependsOn": ["[parameters('serviceBusTopicName')]"],
+              "properties": {},
+              "resources": [
+                {
+                  "apiVersion": "2017-04-01",
+                  "name": "[parameters('deliveryFailedRuleName')]",
+                  "type": "Rules",
+                  "dependsOn": [
+                    "[parameters('subscriptionDeliveryFailedName')]"
+                  ],
+                  "properties": {
+                    "filterType": "CorrelationFilter",
+                    "correlationFilter": {
+                      "event": "DeliveryFailed"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "outputs": {}
+}
